@@ -5,15 +5,57 @@
 <h3>{{ area.city }}, {{ area.state }}</h3>
 	<ul class="items">
 		{% for venue in area.venues %}
-		<li>
+		<li class="a">
+			<!-- <i class="fas fa-music"></i>
 			<a href="/venues/{{ venue.id }}">
 				<i class="fas fa-music"></i>
 				<div class="item">
 					<h5>{{ venue.name }}</h5>
 				</div>
-			</a>
+			</a> -->
+
+			<i class="fas fa-music icon"></i>
+			<div class="item">
+				<h5>
+					<a href="/venues/{{ venue.id }}">
+						{{ venue.name }}
+					</a>
+					<!-- <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+						<i id="icon" class="fas fa-trash-alt icon">
+					</button> -->
+					<a><i id="{{venue.id}}" class="fas fa-trash-alt icon"></i></a>
+				</h5>
+			</div>
 		</li>
 		{% endfor %}
 	</ul>
 {% endfor %}
+<div class="modal fade" id="myModal">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+		  <h4 class="modal-title">would you delete this element?</h4>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-primary"><a id="validate">validate</a></button>
+		</div>
+	</div>
+</div>
+</div>
+
+</div>
+
+<script>
+$(document).ready(function(){
+    $("i").click(function(){
+		venue_id =$(this).attr('id');
+		$("#validate").attr("href", "/venues/delete/"+venue_id);
+		console.log($("#validate").attr('href'));
+        $("#myModal").modal('show');
+    });      
+});
+</script>
+
 {% endblock %}

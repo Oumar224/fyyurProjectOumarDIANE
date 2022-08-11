@@ -1,8 +1,37 @@
 from datetime import datetime
 from flask_wtf import Form
-from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
-from wtforms.validators import DataRequired, AnyOf, URL
+from enum import Enum
+from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField 
+from wtforms.validators import DataRequired, AnyOf, URL , Length
 
+class venue_genre_choices(Enum):
+    name0 = 'Alternative'
+    name1='Blues'
+    name2 ='Classical'
+    name3= 'Country'
+    name4= 'Electronic'
+    name5= 'Folk'
+    name6= 'Funk'
+    name7= 'Hip-Hop'
+    name8= 'Heavy Metal'
+    name9= 'Instrumental'
+    name10= 'Jazz'
+    name11= 'Musical Theatre'
+    name12= 'Pop'
+    name13= 'Punk'
+    name14= 'R&B'
+    name15= 'Reggae'
+    name16= 'Rock n Roll'
+    name17= 'Soul'
+    name18= 'Other'
+
+class artits_link_choices(Enum):
+    name0 = 'https://www.facebook.com/matGDFtquevedo923251523'
+    name1='https://www.facebook.com/matDHDDtquevedo923251523'
+    name2 ='https://www.facebook.com/maDGDJJDttquevedo923251523435'
+    name3 ='https://www.facebook.com/GunsNPetals'
+    name4 ='https://www.facebook.com/mattquevedo923251523'
+    
 class ShowForm(Form):
     artist_id = StringField(
         'artist_id'
@@ -83,35 +112,15 @@ class VenueForm(Form):
         'address', validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone' , validators=[DataRequired() , Length(min=9 ,  message='phone numbers must be obove 9 numbers')]
     )
     image_link = StringField(
         'image_link'
     )
     genres = SelectMultipleField(
-        # TODO implement enum restriction
+        # TODO implement enum restriction(valider)
         'genres', validators=[DataRequired()],
-        choices=[
-            ('Alternative', 'Alternative'),
-            ('Blues', 'Blues'),
-            ('Classical', 'Classical'),
-            ('Country', 'Country'),
-            ('Electronic', 'Electronic'),
-            ('Folk', 'Folk'),
-            ('Funk', 'Funk'),
-            ('Hip-Hop', 'Hip-Hop'),
-            ('Heavy Metal', 'Heavy Metal'),
-            ('Instrumental', 'Instrumental'),
-            ('Jazz', 'Jazz'),
-            ('Musical Theatre', 'Musical Theatre'),
-            ('Pop', 'Pop'),
-            ('Punk', 'Punk'),
-            ('R&B', 'R&B'),
-            ('Reggae', 'Reggae'),
-            ('Rock n Roll', 'Rock n Roll'),
-            ('Soul', 'Soul'),
-            ('Other', 'Other'),
-        ]
+        choices=[(genres.value , genres.value) for genres in venue_genre_choices ]
     )
     facebook_link = StringField(
         'facebook_link', validators=[URL()]
@@ -120,7 +129,7 @@ class VenueForm(Form):
         'website_link'
     )
 
-    seeking_talent = BooleanField( 'seeking_talent' )
+    seeking_talent = BooleanField( 'seeking_talent' , default=False )
 
     seeking_description = StringField(
         'seeking_description'
@@ -192,8 +201,8 @@ class ArtistForm(Form):
         ]
     )
     phone = StringField(
-        # TODO implement validation logic for phone 
-        'phone'
+        # TODO implement validation logic for phone(valider) 
+        'phone' , validators=[DataRequired() , Length(min=9 ,  message='phone numbers must be obove 9 numbers')]
     )
     image_link = StringField(
         'image_link'
@@ -222,9 +231,10 @@ class ArtistForm(Form):
             ('Other', 'Other'),
         ]
      )
-    facebook_link = StringField(
-        # TODO implement enum restriction
-        'facebook_link', validators=[URL()]
+    facebook_link = SelectField(
+        # TODO implement enum restriction(valider)
+        'facebook_link', validators=[URL()],
+        choices=[(link.value , link.value) for link in artits_link_choices ]
      )
 
     website_link = StringField(
